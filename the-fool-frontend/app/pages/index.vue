@@ -318,7 +318,7 @@ onUnmounted(() => {
     </div>
     <template v-else>
       <div ref="snapRef" class="home-snap">
-        <div class="home-sections">
+        <div class="home-sections" :style="{ transform: `translateY(${-currentSection * 100}%)` }">
         <!-- ── Section 1: Hero ── -->
         <section class="home-section home-section--hero" :class="{ 'is-desktop': isDesktop }">
           <div class="hero-center" :class="{ 'is-fading': currentSection !== 0 || !heroActive }">

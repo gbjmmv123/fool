@@ -1,0 +1,88 @@
+@font-face {
+  font-family: 'WanShiQuanXing';
+  src: url('./wanshiquanxing.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GuangLiangGanBei';
+  src: url('./guangliangganbei.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ZiWanGothic';
+  src: url('./ziwangothic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JiangXiZhuoKai';
+  src: url('./jiangxizhuokai.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SheHuiTi';
+  src: url('./shehuiti.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Override digits with a clean system sans-serif across all font stacks */
+@font-face {
+  font-family: 'IM Fell English';
+  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('sans-serif');
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: 'Noto Serif SC';
+  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('sans-serif');
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: 'Songti SC';
+  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('sans-serif');
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: 'WanShiQuanXing';
+  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('sans-serif');
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: 'GuangLiangGanBei';
+  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('sans-serif');
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: 'ZiWanGothic';
+  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('sans-serif');
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: 'JiangXiZhuoKai';
+  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('sans-serif');
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: 'SheHuiTi';
+  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('sans-serif');
+  unicode-range: U+0030-0039;
+}

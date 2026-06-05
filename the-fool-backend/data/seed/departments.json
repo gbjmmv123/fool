@@ -1,0 +1,10 @@
+[
+  { "id": "justice",   "name": "正义",   "sortOrder": 1 },
+  { "id": "hangedman", "name": "倒吊人", "sortOrder": 2 },
+  { "id": "sun",       "name": "太阳",   "sortOrder": 3 },
+  { "id": "magician",  "name": "魔术师", "sortOrder": 4 },
+  { "id": "moon",      "name": "月亮",   "sortOrder": 5 },
+  { "id": "hermit",    "name": "隐者",   "sortOrder": 6 },
+  { "id": "star",      "name": "星星",   "sortOrder": 7 },
+  { "id": "judgement", "name": "审判",   "sortOrder": 8 }
+]

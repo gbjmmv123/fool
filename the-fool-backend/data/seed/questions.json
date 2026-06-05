@@ -1,0 +1,178 @@
+[
+  {
+    "id": "q1",
+    "version": "v2",
+    "orderIndex": 1,
+    "title": "塔罗会每周一凌晨三点开会，你的状态是？",
+    "options": [
+      { "id": "q1a", "label": "提前十分钟上线，整理好本周情报和交易清单", "scores": { "hangedman": 1, "hermit": 1, "judgement": 1 } },
+      { "id": "q1b", "label": "掐点上线，边听边摸鱼写小说 / 擦人偶", "scores": { "magician": 1, "moon": 1 } },
+      { "id": "q1c", "label": "差点睡过头，顶着黑眼圈匆匆赶来", "scores": { "star": 1, "justice": 1, "sun": 1 } }
+    ]
+  },
+  {
+    "id": "q2",
+    "version": "v2",
+    "orderIndex": 2,
+    "title": "完成一个危险任务后，你最想做的第一件事是？",
+    "options": [
+      { "id": "q2a", "label": "复盘任务过程，总结经验教训", "scores": { "hangedman": 1, "hermit": 1 } },
+      { "id": "q2b", "label": "大吃一顿 / 睡个三天三夜", "scores": { "magician": 1, "moon": 1, "sun": 1 } },
+      { "id": "q2c", "label": "找朋友分享任务中的惊险经历", "scores": { "justice": 1, "star": 1, "judgement": 1 } }
+    ]
+  },
+  {
+    "id": "q3",
+    "version": "v2",
+    "orderIndex": 3,
+    "title": "你获得了 1000 镑意外之财，首先会花在哪里？",
+    "options": [
+      { "id": "q3a", "label": "买情报 / 非凡武器 / 古籍，提升实力", "scores": { "hangedman": 1, "hermit": 1, "judgement": 1 } },
+      { "id": "q3b", "label": "买大房子 / 好吃的 / 精美的人偶", "scores": { "magician": 1, "moon": 1 } },
+      { "id": "q3c", "label": "捐给穷人 / 帮助身边有困难的朋友", "scores": { "justice": 1, "sun": 1, "star": 1 } }
+    ]
+  },
+  {
+    "id": "q4",
+    "version": "v2",
+    "orderIndex": 4,
+    "title": "面对一个比自己强三倍的敌人，你的第一反应是？",
+    "options": [
+      { "id": "q4a", "label": "冷静分析弱点，制定逃跑或反击计划", "scores": { "hangedman": 1, "hermit": 1 } },
+      { "id": "q4b", "label": "喊队友一起上，绝不独自逃跑", "scores": { "sun": 1, "judgement": 1, "justice": 1 } },
+      { "id": "q4c", "label": "先跑为敬，活着才有输出", "scores": { "magician": 1, "moon": 1, "star": 1 } }
+    ]
+  },
+  {
+    "id": "q5",
+    "version": "v2",
+    "orderIndex": 5,
+    "title": "队友犯了一个严重错误，导致任务失败，你会？",
+    "options": [
+      { "id": "q5a", "label": "先解决问题，事后再追究责任", "scores": { "hangedman": 1, "hermit": 1, "judgement": 1 } },
+      { "id": "q5b", "label": "安慰队友，一起承担后果", "scores": { "justice": 1, "sun": 1 } },
+      { "id": "q5c", "label": "吐槽两句，然后赶紧想办法补救", "scores": { "magician": 1, "moon": 1, "star": 1 } }
+    ]
+  },
+  {
+    "id": "q6",
+    "version": "v2",
+    "orderIndex": 6,
+    "title": "魔药消化到了瓶颈，你会选择？",
+    "options": [
+      { "id": "q6a", "label": "严格按照扮演法，制定详细的消化计划", "scores": { "hangedman": 1, "hermit": 1, "judgement": 1 } },
+      { "id": "q6b", "label": "顺其自然，该干嘛干嘛，总会消化的", "scores": { "magician": 1, "moon": 1 } },
+      { "id": "q6c", "label": "找塔罗会成员请教，分享扮演经验", "scores": { "justice": 1, "sun": 1, "star": 1 } }
+    ]
+  },
+  {
+    "id": "q7",
+    "version": "v2",
+    "orderIndex": 7,
+    "title": "周末有空，你更愿意？",
+    "options": [
+      { "id": "q7a", "label": "在家看书 / 研究神秘学 / 整理装备", "scores": { "hangedman": 1, "hermit": 1 } },
+      { "id": "q7b", "label": "在家躺平 / 追剧 / 摆弄自己的收藏品", "scores": { "magician": 1, "moon": 1, "sun": 1 } },
+      { "id": "q7c", "label": "出门逛街 / 参加聚会 / 和朋友玩", "scores": { "justice": 1, "star": 1, "judgement": 1 } }
+    ]
+  },
+  {
+    "id": "q8",
+    "version": "v2",
+    "orderIndex": 8,
+    "title": "你发现了一个惊天秘密，你会？",
+    "options": [
+      { "id": "q8a", "label": "藏在心里，谁也不说，直到合适的时机", "scores": { "hangedman": 1, "hermit": 1 } },
+      { "id": "q8b", "label": "只告诉自己最信任的一个人", "scores": { "sun": 1, "judgement": 1, "moon": 1 } },
+      { "id": "q8c", "label": "忍不住和好朋友分享", "scores": { "justice": 1, "magician": 1, "star": 1 } }
+    ]
+  },
+  {
+    "id": "q9",
+    "version": "v2",
+    "orderIndex": 9,
+    "title": "塔罗会分配任务，你更愿意做？",
+    "options": [
+      { "id": "q9a", "label": "制定计划 / 负责后勤 / 情报收集", "scores": { "hangedman": 1, "hermit": 1 } },
+      { "id": "q9b", "label": "前线战斗 / 保护队友", "scores": { "sun": 1, "judgement": 1, "justice": 1 } },
+      { "id": "q9c", "label": "自由行动 / 随机应变的任务", "scores": { "magician": 1, "moon": 1, "star": 1 } }
+    ]
+  },
+  {
+    "id": "q10",
+    "version": "v2",
+    "orderIndex": 10,
+    "title": "你的房间通常是什么样子的？",
+    "options": [
+      { "id": "q10a", "label": "井井有条，所有东西都有固定位置", "scores": { "hangedman": 1, "hermit": 1, "judgement": 1 } },
+      { "id": "q10b", "label": "乱中有序，能找到自己要的东西就行", "scores": { "justice": 1, "sun": 1 } },
+      { "id": "q10c", "label": "非常乱，经常找不到东西", "scores": { "magician": 1, "moon": 1, "star": 1 } }
+    ]
+  },
+  {
+    "id": "q11",
+    "version": "v2",
+    "orderIndex": 11,
+    "title": "你更讨厌哪种情况？",
+    "options": [
+      { "id": "q11a", "label": "计划被打乱，事情失去控制", "scores": { "hangedman": 1, "hermit": 1, "judgement": 1 } },
+      { "id": "q11b", "label": "被人误解，好心没好报", "scores": { "justice": 1, "sun": 1 } },
+      { "id": "q11c", "label": "无聊，没事可做", "scores": { "magician": 1, "moon": 1, "star": 1 } }
+    ]
+  },
+  {
+    "id": "q12",
+    "version": "v2",
+    "orderIndex": 12,
+    "title": "你相信命运吗？",
+    "options": [
+      { "id": "q12a", "label": "不信，命运掌握在自己手里", "scores": { "hangedman": 1, "judgement": 1 } },
+      { "id": "q12b", "label": "半信半疑，觉得有些事是命中注定", "scores": { "magician": 1, "moon": 1, "star": 1 } },
+      { "id": "q12c", "label": "信，但我会努力改变命运", "scores": { "justice": 1, "sun": 1, "hermit": 1 } }
+    ]
+  },
+  {
+    "id": "q13",
+    "version": "v2",
+    "orderIndex": 13,
+    "title": "朋友向你借钱，你会？",
+    "options": [
+      { "id": "q13a", "label": "先问清楚用途，再决定借不借", "scores": { "hangedman": 1, "hermit": 1 } },
+      { "id": "q13b", "label": "只要自己有，就会借给朋友", "scores": { "justice": 1, "sun": 1, "star": 1 } },
+      { "id": "q13c", "label": "找借口拒绝，怕麻烦", "scores": { "magician": 1, "moon": 1, "judgement": 1 } }
+    ]
+  },
+  {
+    "id": "q14",
+    "version": "v2",
+    "orderIndex": 14,
+    "title": "你更喜欢看哪种类型的小说？",
+    "options": [
+      { "id": "q14a", "label": "推理小说 / 历史小说 / 科普书籍", "scores": { "hangedman": 1, "hermit": 1 } },
+      { "id": "q14b", "label": "言情小说 / 奇幻小说 / 诗歌", "scores": { "justice": 1, "magician": 1, "moon": 1 } },
+      { "id": "q14c", "label": "冒险小说 / 侦探小说 / 爽文", "scores": { "sun": 1, "star": 1, "judgement": 1 } }
+    ]
+  },
+  {
+    "id": "q15",
+    "version": "v2",
+    "orderIndex": 15,
+    "title": "你觉得自己最大的优点是？",
+    "options": [
+      { "id": "q15a", "label": "聪明冷静，有责任心", "scores": { "hangedman": 1, "hermit": 1, "judgement": 1 } },
+      { "id": "q15b", "label": "善良真诚，乐于助人", "scores": { "justice": 1, "sun": 1 } },
+      { "id": "q15c", "label": "自由洒脱，随遇而安", "scores": { "magician": 1, "moon": 1, "star": 1 } }
+    ]
+  },
+  {
+    "id": "q16",
+    "version": "v2",
+    "orderIndex": 16,
+    "title": "如果可以选择，你想成为哪种非凡者？",
+    "options": [
+      { "id": "q16a", "label": "知识渊博的学者 / 运筹帷幄的军师", "scores": { "hangedman": 1, "hermit": 1 } },
+      { "id": "q16b", "label": "保护他人的守护者 / 正义的执行者", "scores": { "justice": 1, "sun": 1, "judgement": 1 } },
+      { "id": "q16c", "label": "自由自在的旅行家 / 艺术家", "scores": { "magician": 1, "moon": 1, "star": 1 } }
+    ]
+  }
+]

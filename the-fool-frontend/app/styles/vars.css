@@ -1,0 +1,57 @@
+:root {
+  /* Design Token: text */
+  --dt-text-title: #D4B886;
+  --dt-text-heading: #c9a86c;
+  --dt-text-body: #f1ede6;
+  --dt-text-muted: #8c847c;
+  --dt-text-on-gold: #030708;
+
+  /* Design Token: background */
+  --dt-bg-base: #030708;
+  --dt-bg-elevated: rgba(10, 14, 15, 0.9);
+  --dt-bg-hover: #0f1415;
+
+  /* Design Token: border & state */
+  --dt-border-default: #d4b886;
+  --dt-border-active: #e8d09b;
+  --dt-border-highlight: #f5e2b5;
+  --dt-border-disabled: #6c6256;
+  --dt-border-subtle: #2a2a2a;
+  --dt-state-danger: #d16b6b;
+  --dt-state-success: #6fa27d;
+
+  /* Design Token: shape & effects */
+  --dt-radius-card: 18px;
+  --dt-shadow-card: 0 12px 40px rgba(0, 0, 0, 0.32);
+  --dt-amon-watermark-opacity: 0.08;
+
+  /* Design Token: mirror surface (Arrodes) */
+  --dt-mirror-base: rgba(28, 32, 48, 0.55);
+  --dt-mirror-tint: rgba(180, 200, 255, 0.08);
+  --dt-mirror-edge: rgba(200, 215, 255, 0.55);
+  --dt-mirror-highlight: rgba(255, 255, 255, 0.45);
+  --dt-mirror-shimmer: rgba(220, 230, 255, 0.18);
+  --dt-mirror-text: #e7ecff;
+  --dt-mirror-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(120, 150, 220, 0.2);
+
+  /* Legacy aliases (keep existing components stable during migration) */
+  --c-bg-base: var(--dt-bg-base);
+  --c-bg-card: var(--dt-bg-elevated);
+  --c-text-base: var(--dt-text-body);
+  --c-text-secondary: var(--dt-text-muted);
+  --c-primary: var(--dt-border-default);
+  --c-border: var(--dt-border-subtle);
+  --c-danger: var(--dt-state-danger);
+  --radius-card: var(--dt-radius-card);
+  --shadow-card: var(--dt-shadow-card);
+  --amon-watermark-opacity: var(--dt-amon-watermark-opacity);
+}
+
+.theme-amon {
+  --dt-text-title: #c9c4d6;
+  --dt-text-heading: #b6a7d4;
+  --dt-border-default: #6b5cae;
+  --dt-border-active: #8c7adc;
+  --dt-border-highlight: #b6a3ff;
+  --dt-amon-watermark-opacity: 0.14;
+}

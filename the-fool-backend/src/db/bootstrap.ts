@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS support_conversations (
   user_id TEXT PRIMARY KEY,
   unread_by_user INTEGER NOT NULL DEFAULT 0,
   last_message_role TEXT,
+  pending_draft TEXT,
   last_message_at INTEGER NOT NULL,
   created_at INTEGER NOT NULL
 );
@@ -68,10 +69,18 @@ CREATE INDEX IF NOT EXISTS error_feedbacks_created_at_idx ON error_feedbacks(cre
 
 export function ensureSchema() {
   rawDb.exec(SCHEMA_SQL)
-  // idempotent migration for existing databases
+
+  // idempotent migrations for existing databases
   const cols = rawDb.prepare(`PRAGMA table_info(support_conversations)`).all() as Array<{ name: string }>
+
   if (!cols.some(c => c.name === 'last_message_role')) {
     rawDb.exec(`ALTER TABLE support_conversations ADD COLUMN last_message_role TEXT`)
+    console.log('[db] Added last_message_role column to support_conversations')
+  }
+
+  if (!cols.some(c => c.name === 'pending_draft')) {
+    rawDb.exec(`ALTER TABLE support_conversations ADD COLUMN pending_draft TEXT`)
+    console.log('[db] Added pending_draft column to support_conversations')
   }
 }
 

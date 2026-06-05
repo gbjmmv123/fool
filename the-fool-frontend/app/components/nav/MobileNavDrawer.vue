@@ -94,7 +94,6 @@ defineExpose({ open })
             </NuxtLink>
           </nav>
 
-          <div class="nav-overlay__deco" aria-hidden="true">〇</div>
         </div>
       </Transition>
     </Teleport>

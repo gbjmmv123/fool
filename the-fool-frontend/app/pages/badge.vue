@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PAGE_META, BADGE_COPY } from '~/data/copy'
+import { PAGE_META } from '~/data/copy'
 import BadgeCard from '~/components/badge/BadgeCard.vue'
 import BadgeForm from '~/components/badge/BadgeForm.vue'
 
@@ -18,11 +18,10 @@ const {
   exportBadge,
 } = useBadgeConfig()
 
-const exportFrameRef = ref<HTMLElement | null>(null)
 const fileInputRef = ref<HTMLInputElement | null>(null)
 
 function onSave() {
-  if (exportFrameRef.value) exportBadge(exportFrameRef.value)
+  exportBadge()
 }
 
 async function onFileChange(e: Event) {
@@ -98,24 +97,6 @@ onUnmounted(() => {
         >
       </section>
     </div>
-
-    <div class="badge-export-staging" aria-hidden="true">
-      <div ref="exportFrameRef" class="badge-export-frame">
-        <BadgeCard :config="config" :avatar-url="avatarUrl" />
-      </div>
-    </div>
-
-    <Teleport to="body">
-      <Transition name="fade">
-        <div v-if="exporting" class="export-overlay" role="alert" aria-live="polite">
-          <div class="export-overlay__panel">
-            <div class="export-overlay__spinner" aria-hidden="true" />
-            <p class="export-overlay__title">{{ BADGE_COPY.formExportingTitle }}</p>
-            <p class="export-overlay__sub">{{ BADGE_COPY.formExportingSub }}</p>
-          </div>
-        </div>
-      </Transition>
-    </Teleport>
   </MainContent>
 </template>
 
@@ -171,84 +152,6 @@ onUnmounted(() => {
   height: 1px;
   opacity: 0;
   pointer-events: none;
-}
-
-.badge-export-staging {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.badge-export-frame {
-  width: 276px;
-  aspect-ratio: 0.58;
-  display: grid;
-  place-items: center;
-}
-
-.export-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: grid;
-  place-items: center;
-  background: rgba(0, 0, 0, 0.78);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.export-overlay__panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1.75rem 2.25rem;
-  border: 1px solid var(--dt-border-default);
-  border-radius: var(--dt-radius-card);
-  background: #181818;
-  box-shadow: var(--dt-shadow-card);
-  text-align: center;
-}
-
-.export-overlay__spinner {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid rgba(212, 184, 134, 0.18);
-  border-top-color: var(--dt-border-default);
-  animation: badge-spin 0.85s linear infinite;
-}
-
-.export-overlay__title {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--dt-text-title);
-  letter-spacing: 0.06em;
-}
-
-.export-overlay__sub {
-  margin: 0;
-  font-size: 0.8rem;
-  color: var(--dt-text-muted);
-  letter-spacing: 0.02em;
-}
-
-@keyframes badge-spin {
-  to { transform: rotate(360deg); }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.18s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 
 @media (min-width: 768px) {

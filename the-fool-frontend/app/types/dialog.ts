@@ -20,3 +20,13 @@ export interface DialogState<TResult = unknown> {
 export interface NameInputResult { nickname: string }
 export type ConfirmResult = 'confirm' | 'cancel'
 export interface AvatarCropResult { dataUrl: string }
+
+export interface BadgeSaveDialogPayload {
+  status: 'loading' | 'ready' | 'error'
+  imageDataUrl?: string
+  fileName?: string
+  isWechat: boolean
+  renderTimeMs?: number
+  downloadTimeMs?: number
+  message?: string
+}

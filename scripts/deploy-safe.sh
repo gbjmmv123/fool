@@ -2,6 +2,7 @@
 set -e
 SERVER_IP="192.144.132.228"
 SERVER_PATH="/www/wwwroot/theFool"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_NAME="backup-$(date +%Y%m%d-%H%M%S)"
 
 echo "🚀 安全部署模式 (带自动备份)..."
@@ -29,7 +30,7 @@ rsync -avz \
   --exclude='.DS_Store' \
   --exclude='.git' \
   --exclude='*.tar.gz' \
-  /Users/gjl/Documents/trae_projects/theFool/ \
+  "$SCRIPT_DIR"/../ \
   root@${SERVER_IP}:${SERVER_PATH}/
 
 # ── 2. 后端构建 ──
@@ -39,12 +40,9 @@ set -e
 export PATH=/usr/local/bin:$PATH
 cd /www/wwwroot/theFool/the-fool-backend
 npm rebuild better-sqlite3 2>/dev/null || true
-if [ package.json -nt node_modules ]; then
-  echo "  [后端] package.json 已变更，重新安装依赖..."
-  npm install
-else
-  echo "  [后端] 依赖无变化，跳过安装"
-fi
+echo "  [后端] 删除旧依赖并重新安装..."
+rm -rf node_modules
+npm install
 npm run build
 BACKEND
 then
@@ -59,12 +57,9 @@ set -e
 export PATH=/usr/local/bin:$PATH
 cd /www/wwwroot/theFool/the-fool-frontend
 chattr -i .output/public/.user.ini 2>/dev/null || true
-if [ package.json -nt node_modules ]; then
-  echo "  [前端] package.json 已变更，重新安装依赖..."
-  npm install
-else
-  echo "  [前端] 依赖无变化，跳过安装"
-fi
+echo "  [前端] 删除旧依赖并重新安装..."
+rm -rf node_modules
+npm install
 echo "  [前端] SSG 生成中，请耐心等待..."
 rm -rf .output .nuxt
 NUXT_PUBLIC_API_BASE='' npx nuxi generate

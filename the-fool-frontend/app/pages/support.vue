@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SupportMessageList from '~/components/support/SupportMessageList.vue'
 import SupportComposer from '~/components/support/SupportComposer.vue'
+import { COMMON } from '~/data/copy'
 
 definePageMeta({ title: '小镜子客服' })
 
@@ -20,6 +21,10 @@ async function onSubmit(content: string) {
   try {
     await send(content)
   } catch {}
+}
+
+function refreshPage() {
+  window.location.reload()
 }
 </script>
 
@@ -48,7 +53,9 @@ async function onSubmit(content: string) {
         <SupportMessageList :messages="messages" :thinking="thinking" :daily-limit-reached="dailyLimitReached" :daily-remaining="dailyRemaining" />
       </div>
 
-      <div v-if="error" class="chat-error">{{ error }}</div>
+      <div v-if="error" class="chat-error">
+        <button class="btn chat-error__btn" type="button" @click="refreshPage">{{ COMMON.refresh }}</button>
+      </div>
 
       <div class="chat-footer">
         <SupportComposer :disabled="sending" :thinking="thinking" :daily-limit-reached="dailyLimitReached" :daily-remaining="dailyRemaining" @submit="onSubmit" />
@@ -204,11 +211,13 @@ async function onSubmit(content: string) {
 
 .chat-error {
   padding: 0.35rem 1.2rem;
-  font-size: 0.76rem;
-  color: var(--dt-state-danger);
-  background: color-mix(in srgb, var(--dt-state-danger) 10%, transparent);
   flex-shrink: 0;
   text-align: center;
+  background: color-mix(in srgb, var(--dt-state-danger) 10%, transparent);
+}
+
+.chat-error__btn {
+  min-width: 7rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

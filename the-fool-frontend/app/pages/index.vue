@@ -310,8 +310,7 @@ onUnmounted(() => {
   </button>
   <MainContent :title="HOME.churchLinkText">
     <div v-if="error" class="bootstrap-error">
-      <p>{{ error }}</p>
-      <button class="btn" @click="() => refresh(true)">{{ COMMON.retry }}</button>
+      <button class="btn" @click="() => refresh(true)">{{ COMMON.refresh }}</button>
     </div>
     <div v-else-if="loading" class="bootstrap-loading">
       <p>{{ HOME.loadingText }}</p>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SupportMessageList from './SupportMessageList.vue'
 import SupportComposer from './SupportComposer.vue'
+import { COMMON } from '~/data/copy'
 
 const { messages, sending, thinking, error, send, closePanel, dailyLimitReached, dailyRemaining } = useSupport()
 const composerRef = ref<InstanceType<typeof SupportComposer> | null>(null)
@@ -16,6 +17,10 @@ const isMobile = computed(() => width.value < 768)
 
 function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') closePanel()
+}
+
+function refreshPage() {
+  window.location.reload()
 }
 
 onMounted(() => {
@@ -103,7 +108,9 @@ onUnmounted(() => { if (releaseTimer) clearTimeout(releaseTimer) })
             </div>
           </header>
           <SupportMessageList :messages="messages" :thinking="thinking" :daily-limit-reached="dailyLimitReached" :daily-remaining="dailyRemaining" />
-          <div v-if="error" class="support-error">{{ error }}</div>
+          <div v-if="error" class="support-error">
+            <button class="btn support-error__btn" type="button" @click="refreshPage">{{ COMMON.refresh }}</button>
+          </div>
           <SupportComposer
             ref="composerRef"
             :disabled="sending"
@@ -274,10 +281,13 @@ onUnmounted(() => { if (releaseTimer) clearTimeout(releaseTimer) })
 
 .support-error {
   padding: 0.35rem 1rem;
-  font-size: 0.76rem;
-  color: var(--dt-state-danger);
   background: color-mix(in srgb, var(--dt-state-danger) 10%, transparent);
   flex-shrink: 0;
+  text-align: center;
+}
+
+.support-error__btn {
+  min-width: 7rem;
 }
 
 .support-popover-enter-active {

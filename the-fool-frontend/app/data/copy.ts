@@ -120,7 +120,9 @@ export const RESULT = {
   shareJoinedAt: '您已于{time}',
   shareDeptLabel: '入职{dept}的部门',
   shareQrLabel: '扫码入职愚者教会',
-  shareGenerating: '努力在生成了，时间可能较长请稍后',
+  shareGenerating: '画完你的 画你的(绘图时间较长，请稍后)',
+  shareLongPressTip: '请长按下方图片，选择「保存到相册」',
+  shareFailed: '分享图生成失败，请稍后重试。',
   shareSaveBtn: '保存图片',
   shareSavingBtn: '保存中…',
   shareDownloadName: '愚者教会-{dept}部门.png',
@@ -172,13 +174,16 @@ export const MODAL = {
   shareCardClose: '关闭',
   shareCardSaving: '保存中…',
   shareCardSave: '保存图片',
-  shareCardGenerating: '努力在生成了，时间可能较长请稍后',
+  shareCardGenerating: '画完你的 画你的(绘图时间较长，请稍后)',
   shareCardDownloadName: '愚者教会-{dept}部门.png',
-  shareCardTempLabel: '[测试] 切换长官:',
 
   // Badge save modal
   badgeSaveTitle: '保存工牌',
   badgeSaveTip: '请长按下方图片，选择「保存到相册」',
+  badgeSaveDesktopTip: '图片已生成，可直接保存或下载。',
+  badgeSaveRendering: '真的努力再画了，稍等等QAQ',
+  badgeSaveFailed: '工牌生成失败，请稍后重试。',
+  badgeSaveDownloadAgain: '重新下载',
   badgeSaveDone: '完成',
   badgeCardAriaLabel: '工牌',
 
@@ -317,7 +322,7 @@ export const SITE_COPY = {
 
   disclaimerTitle: '免责声明',
   disclaimer: [
-    '凡访问、使用本【愚者教会整活趣味网站】（以下简称"本站"）所有功能与服务的用户，即表示自愿同意本免责声明全部条款。若不认可任一条款，请立即停止使用本站服务。',
+    '凡访问、使用本【愚者教会招聘网站】（以下简称本站）所有功能与服务的用户，即表示自愿同意本免责声明全部条款。若不认可任一条款，请立即停止使用本站服务。',
   ],
   section1Title: '一、服务性质说明',
   section1: [

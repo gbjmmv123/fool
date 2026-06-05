@@ -9,6 +9,8 @@ import department from '~/routes/department'
 import support from '~/routes/support'
 import amon from '~/routes/amon'
 import feedback from '~/routes/feedback'
+import badge from '~/routes/badge'
+import share from '~/routes/share'
 
 export function createApp() {
   const app = new Hono()
@@ -28,6 +30,8 @@ export function createApp() {
   app.route('/api', support)
   app.route('/api', amon)
   app.route('/api', feedback)
+  app.route('/api', badge)
+  app.route('/api', share)
 
   app.notFound((c) => c.json({ error: 'not_found' }, 404))
   app.onError((err, c) => {

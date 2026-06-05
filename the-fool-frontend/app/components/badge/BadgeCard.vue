@@ -71,12 +71,8 @@ const avatarStyle = computed(() => ({
   aspect-ratio: 0.58;
   overflow: hidden;
   border-radius: 22px;
-  background: linear-gradient(180deg, #ffffff 0%, #f4f4f4 100%);
-  box-shadow:
-    0 12px 24px rgba(0, 0, 0, 0.1),
-    0 4px 10px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+  background: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
   color: #2d2d2d;
   flex-shrink: 0;
 }
@@ -91,9 +87,6 @@ const avatarStyle = computed(() => ({
   transform: translateX(-50%);
   border-radius: 999px;
   background: linear-gradient(180deg, #bdbdbd 0%, #dcdcdc 100%);
-  box-shadow:
-    inset 0 3px 6px rgba(0, 0, 0, 0.18),
-    0 1px 1px rgba(255, 255, 255, 0.9);
 }
 
 .badge-band {
@@ -115,7 +108,7 @@ const avatarStyle = computed(() => ({
 .badge-brand {
   margin: 0;
   font-size: 20px;
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.1;
   letter-spacing: 0.2px;
   color: #2f2f2f;
@@ -137,40 +130,21 @@ const avatarStyle = computed(() => ({
   margin: 16px auto 0;
 }
 
-.badge-avatar-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 12px;
-  z-index: 0;
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 1px var(--theme-outline-color, rgba(240, 112, 16, 0.28)),
-    0 0 28px var(--theme-shadow-color, rgba(240, 112, 16, 0.22)),
-    0 8px 18px rgba(0, 0, 0, 0.08);
-}
-
 .badge-avatar {
   position: absolute;
   inset: 0;
   z-index: 1;
   display: grid;
-  place-items: end center;
-  overflow: hidden;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #fbfbfb 0%, #ededed 100%);
-  box-shadow:
-    0 0 16px rgba(0, 0, 0, 0.08),
-    0 6px 14px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  place-items: center;
 }
 
 .badge-avatar-photo {
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
-  background-position: center bottom;
+  background-position: center;
   background-size: contain;
-  transform: scale(1.12);
+  transform: scale(1.3);
 }
 
 .badge-info {

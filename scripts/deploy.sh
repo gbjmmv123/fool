@@ -2,6 +2,7 @@
 set -e
 SERVER_IP="192.144.132.228"
 SERVER_PATH="/www/wwwroot/theFool"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "🚀 部署到 $SERVER_IP ..."
 
@@ -16,7 +17,7 @@ rsync -avz \
   --exclude='.DS_Store' \
   --exclude='.git' \
   --exclude='*.tar.gz' \
-  /Users/gjl/Documents/trae_projects/theFool/ \
+  "$SCRIPT_DIR"/../ \
   root@${SERVER_IP}:${SERVER_PATH}/
 
 echo "[2/4] 服务器构建..."

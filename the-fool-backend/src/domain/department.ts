@@ -1,4 +1,4 @@
-import { eq, desc, sql } from 'drizzle-orm'
+import { eq, desc, sql, asc } from 'drizzle-orm'
 import { db } from '~/db/client'
 import { users, departments, examResults } from '~/db/schema'
 import type { DepartmentDetail, DepartmentMember, MyDepartmentResponse } from '~/types/api'

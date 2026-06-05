@@ -1,4 +1,11 @@
-import type { DialogState, DialogType, NameInputResult, ConfirmResult, AvatarCropResult } from '~/types/dialog'
+import type {
+  DialogState,
+  DialogType,
+  NameInputResult,
+  ConfirmResult,
+  AvatarCropResult,
+  BadgeSaveDialogPayload,
+} from '~/types/dialog'
 import type { ExamResultResponse } from '~/types/result'
 
 export function useDialog() {
@@ -15,6 +22,14 @@ export function useDialog() {
     const target = dialogs.value.find(d => d.key === key)
     target?.resolve(value)
     dialogs.value = dialogs.value.filter(d => d.key !== key)
+  }
+
+  function updateDialog(key: string, payload: Record<string, unknown>) {
+    dialogs.value = dialogs.value.map(dialog =>
+      dialog.key === key
+        ? { ...dialog, payload: { ...dialog.payload, ...payload } }
+        : dialog,
+    )
   }
 
   function openNameInputDialog() {
@@ -41,8 +56,19 @@ export function useDialog() {
     return pushDialog<AvatarCropResult | null>({ type: 'avatar-crop', payload: { file }, blocking: false })
   }
 
-  function openBadgeWechatSaveDialog(imageDataUrl: string) {
-    return pushDialog<void>({ type: 'badge-wechat-save', payload: { imageDataUrl }, blocking: false })
+  function openBadgeWechatSaveDialog(payload: BadgeSaveDialogPayload) {
+    const key = `badge-wechat-save_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`
+    dialogs.value = [
+      ...dialogs.value,
+      {
+        key,
+        type: 'badge-wechat-save',
+        payload,
+        blocking: false,
+        resolve: () => {},
+      },
+    ]
+    return key
   }
 
   function openStaffPasswordDialog() {
@@ -53,5 +79,18 @@ export function useDialog() {
     return pushDialog<void>({ type: 'error-modal', payload: {}, blocking: false })
   }
 
-  return { dialogs, closeDialog, openNameInputDialog, openWelcomeDialog, openAlertDialog, openConfirmDialog, openShareCardDialog, openAvatarCropDialog, openBadgeWechatSaveDialog, openStaffPasswordDialog, openErrorModal }
+  return {
+    dialogs,
+    closeDialog,
+    updateDialog,
+    openNameInputDialog,
+    openWelcomeDialog,
+    openAlertDialog,
+    openConfirmDialog,
+    openShareCardDialog,
+    openAvatarCropDialog,
+    openBadgeWechatSaveDialog,
+    openStaffPasswordDialog,
+    openErrorModal,
+  }
 }

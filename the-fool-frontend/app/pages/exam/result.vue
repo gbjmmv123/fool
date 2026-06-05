@@ -39,10 +39,8 @@ onMounted(() => { story.init() })
     <ResultLoadingPanel v-if="story.stage.value === 'loading'" />
 
     <div v-else-if="story.stage.value === 'error'" class="result-error">
-      <p class="result-error__msg">{{ story.error.value }}</p>
       <div class="result-error__actions">
-        <button class="btn" @click="story.retry()">{{ COMMON.retry }}</button>
-        <NuxtLink to="/" class="btn">{{ COMMON.backToHome }}</NuxtLink>
+        <button class="btn" @click="() => window.location.reload()">{{ COMMON.refresh }}</button>
       </div>
     </div>
 
@@ -71,10 +69,6 @@ onMounted(() => { story.init() })
   align-items: center;
   gap: 1rem;
   padding: 3rem 0;
-}
-.result-error__msg {
-  color: var(--dt-state-danger);
-  margin: 0;
 }
 .result-error__actions {
   display: flex;

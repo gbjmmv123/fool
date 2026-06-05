@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     head: {
       title: '愚者教会',
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content' },
         { name: 'description', content: '愚者教会前端项目骨架。' },
       ],
       link: [

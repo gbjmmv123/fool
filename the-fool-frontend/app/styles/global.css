@@ -5,23 +5,31 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html,
-body,
-#__nuxt {
-  height: 100%;
+/* 防止 iOS 聚焦输入框自动放大（font-size < 16px 会触发） */
+input,
+textarea,
+select {
+  font-size: 16px;
 }
 
+/* 固定定位替代高度百分比 —— iOS 虚拟键盘弹出/收起时不会产生黑边 */
 html {
+  position: fixed;
+  inset: 0;
   overflow: hidden;
   overscroll-behavior-x: none;
   background: var(--dt-bg-base);
 }
 
 body {
+  position: fixed;
+  inset: 0;
   overflow: hidden;
 }
 
 #__nuxt {
+  position: fixed;
+  inset: 0;
   overflow-y: auto;
   overscroll-behavior-y: none;
   touch-action: manipulation;
@@ -70,7 +78,7 @@ button::-moz-focus-inner {
 }
 
 .app-shell {
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
 }

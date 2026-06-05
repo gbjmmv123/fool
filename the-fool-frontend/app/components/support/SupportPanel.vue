@@ -2,7 +2,7 @@
 import SupportMessageList from './SupportMessageList.vue'
 import SupportComposer from './SupportComposer.vue'
 
-const { messages, sending, thinking, error, pendingDraft, send, clearDraft, closePanel } = useSupport()
+const { messages, sending, thinking, error, send, closePanel, dailyLimitReached, dailyRemaining } = useSupport()
 const composerRef = ref<InstanceType<typeof SupportComposer> | null>(null)
 
 async function onSubmit(content: string) {
@@ -10,14 +10,6 @@ async function onSubmit(content: string) {
     await send(content)
   } catch {}
 }
-
-// 当 AI 草稿返回时，填入编辑器文本框并自适应高度
-watch(pendingDraft, (draft) => {
-  if (draft && composerRef.value) {
-    composerRef.value.setDraft(draft)
-    clearDraft()
-  }
-})
 
 const { width } = useWindowSize()
 const isMobile = computed(() => width.value < 768)
@@ -82,7 +74,7 @@ onUnmounted(() => { if (releaseTimer) clearTimeout(releaseTimer) })
 <template>
   <Teleport to="body">
     <Transition :name="isMobile ? 'support-sheet' : 'support-popover'">
-      <div class="support-shell" role="dialog" aria-label="阿罗德斯客服" aria-modal="false">
+      <div class="support-shell" role="dialog" aria-label="小镜子客服" aria-modal="false">
         <div v-if="isMobile" class="support-backdrop" @click="closePanel" />
         <div
           class="support-panel"
@@ -100,8 +92,8 @@ onUnmounted(() => { if (releaseTimer) clearTimeout(releaseTimer) })
             <div class="support-titlebar">
               <div class="support-title-group">
                 <span class="support-dot" aria-hidden="true" />
-                <span class="support-title">阿罗德斯客服</span>
-                <span v-if="thinking" class="support-thinking-badge">思考中</span>
+                <span class="support-title">小镜子客服</span>
+                <span v-if="thinking" class="support-thinking-badge">等待回复</span>
               </div>
               <button class="support-close" type="button" aria-label="关闭" @click="closePanel">
                 <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
@@ -110,12 +102,12 @@ onUnmounted(() => { if (releaseTimer) clearTimeout(releaseTimer) })
               </button>
             </div>
           </header>
-          <SupportMessageList :messages="messages" :thinking="thinking" />
+          <SupportMessageList :messages="messages" :thinking="thinking" :daily-limit-reached="dailyLimitReached" :daily-remaining="dailyRemaining" />
           <div v-if="error" class="support-error">{{ error }}</div>
           <SupportComposer
             ref="composerRef"
             :disabled="sending"
-            :thinking="thinking"
+            :thinking="thinking" :daily-limit-reached="dailyLimitReached" :daily-remaining="dailyRemaining"
             @submit="onSubmit"
           />
         </div>
@@ -160,7 +152,6 @@ onUnmounted(() => { if (releaseTimer) clearTimeout(releaseTimer) })
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-/* Desktop */
 @media (min-width: 768px) {
   .support-panel {
     right: 1.25rem;
@@ -171,7 +162,6 @@ onUnmounted(() => { if (releaseTimer) clearTimeout(releaseTimer) })
   }
 }
 
-/* Mobile */
 @media (max-width: 767px) {
   .support-panel {
     left: 0;
@@ -290,7 +280,6 @@ onUnmounted(() => { if (releaseTimer) clearTimeout(releaseTimer) })
   flex-shrink: 0;
 }
 
-/* Transitions */
 .support-popover-enter-active {
   transition: opacity 0.28s ease, transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -319,7 +308,6 @@ onUnmounted(() => { if (releaseTimer) clearTimeout(releaseTimer) })
 .support-sheet-enter-from,
 .support-sheet-leave-to { opacity: 0; }
 
-/* Shimmer on open */
 .support-popover-enter-active .support-panel,
 .support-sheet-enter-active .support-panel { position: relative; }
 .support-popover-enter-active .support-panel::before,

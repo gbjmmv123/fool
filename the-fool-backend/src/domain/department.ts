@@ -1,4 +1,4 @@
-import { eq, asc, sql } from 'drizzle-orm'
+import { eq, desc, sql } from 'drizzle-orm'
 import { db } from '~/db/client'
 import { users, departments, examResults } from '~/db/schema'
 import type { DepartmentDetail, DepartmentMember, MyDepartmentResponse } from '~/types/api'
@@ -25,7 +25,7 @@ function loadMembers(deptId: string, limit?: number): DepartmentMember[] {
     .from(users)
     .leftJoin(examResults, eq(examResults.id, users.latestResultId))
     .where(eq(users.departmentId, deptId))
-    .orderBy(asc(examResults.createdAt))
+    .orderBy(desc(examResults.createdAt))
 
   const rows = limit !== undefined ? query.limit(limit).all() : query.all()
 

@@ -3,6 +3,8 @@ const emit = defineEmits<{ (e: 'submit', value: string): void }>()
 const props = defineProps<{
   disabled?: boolean
   thinking?: boolean
+  dailyLimitReached?: boolean
+  dailyRemaining?: number
 }>()
 
 const DRAFT_KEY = 'church_support_draft'
@@ -18,7 +20,7 @@ watch(draft, (value) => {
 })
 
 const overLimit = computed(() => Array.from(draft.value).length >= MAX_LEN)
-const isDisabled = computed(() => props.disabled || props.thinking)
+const isDisabled = computed(() => props.disabled || props.thinking || props.dailyLimitReached)
 
 function autoResize() {
   const el = inputRef.value
@@ -44,7 +46,6 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
-/** 外部填入草稿文本，自动触发高度适配 */
 function setDraft(text: string) {
   draft.value = text
   nextTick(() => {
@@ -72,12 +73,18 @@ defineExpose({ focus: () => inputRef.value?.focus(), setDraft })
         太长了！你是不是想难为小镜子！
       </div>
     </Transition>
+    <!-- 每日限额提示 -->
+    <Transition name="support-warn">
+      <div v-if="dailyLimitReached" class="support-limit" role="alert">
+          伟大的崇高的主人要带我去梦境都市玩喽～ 拜拜～ 
+      </div>
+    </Transition>
     <div class="support-composer__row">
       <textarea
         ref="inputRef"
         v-model="draft"
         class="support-input"
-        :placeholder="thinking ? '阿罗德斯正在镜中思考...' : '输入消息，回车发送'"
+        :placeholder="dailyLimitReached ? '今日次数已用完' : thinking ? '阿罗德斯正在镜中思考...' : `输入消息，回车发送 (今日剩余 ${dailyRemaining ?? 3} 次)`"
         rows="1"
         :maxlength="MAX_LEN"
         :disabled="isDisabled"
@@ -115,6 +122,15 @@ defineExpose({ focus: () => inputRef.value?.focus(), setDraft })
   line-height: 1.3;
 }
 
+.support-limit {
+  font-size: 0.76rem;
+  letter-spacing: 0.05em;
+  color: var(--dt-text-title);
+  padding: 0.3rem 0.2rem 0.4rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
 .support-warn-enter-active,
 .support-warn-leave-active {
   transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.22s ease;
@@ -129,7 +145,7 @@ defineExpose({ focus: () => inputRef.value?.focus(), setDraft })
 .support-warn-enter-to,
 .support-warn-leave-from {
   opacity: 1;
-  max-height: 40px;
+  max-height: 80px;
 }
 
 .support-composer__row {
@@ -164,7 +180,7 @@ defineExpose({ focus: () => inputRef.value?.focus(), setDraft })
   color: var(--dt-text-muted);
 }
 .support-input:disabled {
-  opacity: 0.55;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
@@ -199,7 +215,7 @@ defineExpose({ focus: () => inputRef.value?.focus(), setDraft })
   transform: scale(0.96);
 }
 .support-send:disabled {
-  opacity: 0.45;
+  opacity: 0.35;
   cursor: not-allowed;
   box-shadow: none;
 }

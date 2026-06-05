@@ -4,6 +4,31 @@ import { sendSupportMessage, pullSupportMessages, markSupportRead } from '~/serv
 const POLL_OPEN_MS = 4000
 const POLL_CLOSED_MS = 30000
 const LAST_SEEN_KEY = 'church_support_last_seen_id'
+const DAILY_COUNT_KEY = 'church_support_daily'
+const DAILY_LIMIT = 3
+
+function getTodayKey(): string {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+function readDailyCount(): { date: string; count: number } {
+  if (!import.meta.client) return { date: getTodayKey(), count: 0 }
+  try {
+    const raw = localStorage.getItem(DAILY_COUNT_KEY)
+    if (!raw) return { date: getTodayKey(), count: 0 }
+    const parsed = JSON.parse(raw) as { date: string; count: number }
+    if (parsed.date === getTodayKey()) return parsed
+    return { date: getTodayKey(), count: 0 }
+  } catch {
+    return { date: getTodayKey(), count: 0 }
+  }
+}
+
+function writeDailyCount(count: number) {
+  if (!import.meta.client) return
+  localStorage.setItem(DAILY_COUNT_KEY, JSON.stringify({ date: getTodayKey(), count }))
+}
 
 function readLastSeen(): string | null {
   if (!import.meta.client) return null
@@ -25,8 +50,10 @@ export function useSupport() {
   const sending = useState<boolean>('church-support-sending', () => false)
   const thinking = useState<boolean>('church-support-thinking', () => false)
   const error = useState<string | null>('church-support-error', () => null)
+  const dailyCount = useState<number>('church-support-daily-count', () => readDailyCount().count)
+  const dailyLimitReached = computed(() => dailyCount.value >= DAILY_LIMIT)
+  const dailyRemaining = computed(() => Math.max(0, DAILY_LIMIT - dailyCount.value))
   const pollHandle = useState<{ id: number | null }>('church-support-poll', () => ({ id: null }))
-  const pendingDraft = useState<string | null>('church-support-pending-draft', () => null)
 
   const { userId } = useUserIdentity()
 
@@ -38,7 +65,6 @@ export function useSupport() {
     messages.value = [...messages.value, ...fresh]
     latestId.value = messages.value[messages.value.length - 1]!.id
 
-    // 如果有 staff 回复到来，结束等待状态
     if (thinking.value && fresh.some(m => m.role === 'staff')) {
       thinking.value = false
     }
@@ -52,7 +78,6 @@ export function useSupport() {
       if (latestId.value === null && res.messages.length > 0) {
         messages.value = res.messages
         latestId.value = res.latestId
-        // 初始加载时检查是否已有 staff 回复
         if (thinking.value && res.messages.some(m => m.role === 'staff')) {
           thinking.value = false
         }
@@ -78,19 +103,18 @@ export function useSupport() {
 
   async function send(content: string) {
     const trimmed = content.trim()
-    if (!trimmed) return
+    if (!trimmed || dailyLimitReached.value) return
     const id = userId.value
     if (!id) return
     sending.value = true
     thinking.value = true
     error.value = null
-    pendingDraft.value = null
     try {
       const res = await sendSupportMessage(id, trimmed)
       appendMessages([res.message])
-      if (res.draft) {
-        pendingDraft.value = res.draft
-      }
+      // 记录每日发送次数
+      dailyCount.value++
+      writeDailyCount(dailyCount.value)
     } catch (e) {
       error.value = e instanceof Error ? e.message : '发送失败'
       thinking.value = false
@@ -98,10 +122,6 @@ export function useSupport() {
     } finally {
       sending.value = false
     }
-  }
-
-  function clearDraft() {
-    pendingDraft.value = null
   }
 
   async function flushRead() {
@@ -193,10 +213,11 @@ export function useSupport() {
     sending,
     thinking,
     error,
-    pendingDraft,
+    dailyCount,
+    dailyLimitReached,
+    dailyRemaining,
     send,
     pull,
-    clearDraft,
     openPanel,
     closePanel,
     togglePanel,

@@ -37,7 +37,7 @@ defineExpose({ setDraft })
       v-model="content"
       class="composer__input"
       :placeholder="STAFF_COPY.composerPlaceholder"
-      rows="3"
+      rows="12"
       :disabled="sending"
       @keydown="handleKeydown"
     />

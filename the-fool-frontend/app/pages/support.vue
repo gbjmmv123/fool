@@ -2,11 +2,10 @@
 import SupportMessageList from '~/components/support/SupportMessageList.vue'
 import SupportComposer from '~/components/support/SupportComposer.vue'
 
-definePageMeta({ title: '阿罗德斯客服' })
+definePageMeta({ title: '小镜子客服' })
 
 const { state, initialized } = useBootstrap()
-const { messages, sending, thinking, error, pendingDraft, send, clearDraft, openPanel, closePanel } = useSupport()
-const composerRef = ref<InstanceType<typeof SupportComposer> | null>(null)
+const { messages, sending, thinking, error, send, openPanel, closePanel, dailyLimitReached, dailyRemaining } = useSupport()
 
 watchEffect(() => {
   if (initialized.value && !state.value.hasCompletedExam) {
@@ -22,28 +21,19 @@ async function onSubmit(content: string) {
     await send(content)
   } catch {}
 }
-
-// AI 草稿填入文本框
-watch(pendingDraft, (draft) => {
-  if (draft && composerRef.value) {
-    composerRef.value.setDraft(draft)
-    clearDraft()
-  }
-})
 </script>
 
 <template>
   <div class="chat-page">
     <div class="chat-card">
-      <!-- Header -->
       <header class="chat-header">
         <div class="chat-header__top">
           <div class="chat-header__title-row">
             <span class="chat-dot" aria-hidden="true" />
-            <h1 class="chat-title">阿罗德斯客服</h1>
-            <span v-if="thinking" class="chat-thinking-badge">思考中</span>
+            <h1 class="chat-title">小镜子客服</h1>
+            <span v-if="thinking" class="chat-thinking-badge">等待回复</span>
           </div>
-          <p class="chat-subtitle">镜面水波荡漾，光芒会为你作答</p>
+          <p class="chat-subtitle">表面刻有奇异花纹的古老银镜</p>
         </div>
         <div class="chat-header__ornament" aria-hidden="true">
           <svg width="120" height="2" viewBox="0 0 120 2" fill="none">
@@ -54,22 +44,14 @@ watch(pendingDraft, (draft) => {
         </div>
       </header>
 
-      <!-- Messages -->
       <div class="chat-body">
-        <SupportMessageList :messages="messages" :thinking="thinking" />
+        <SupportMessageList :messages="messages" :thinking="thinking" :daily-limit-reached="dailyLimitReached" :daily-remaining="dailyRemaining" />
       </div>
 
-      <!-- Error -->
       <div v-if="error" class="chat-error">{{ error }}</div>
 
-      <!-- Composer -->
       <div class="chat-footer">
-        <SupportComposer
-          ref="composerRef"
-          :disabled="sending"
-          :thinking="thinking"
-          @submit="onSubmit"
-        />
+        <SupportComposer :disabled="sending" :thinking="thinking" :daily-limit-reached="dailyLimitReached" :daily-remaining="dailyRemaining" @submit="onSubmit" />
       </div>
     </div>
   </div>
@@ -114,7 +96,6 @@ watch(pendingDraft, (draft) => {
   }
 }
 
-/* Header */
 .chat-header {
   padding: 1rem 1.2rem 0.5rem;
   border-bottom: 1px solid color-mix(in srgb, var(--dt-mirror-edge) 20%, transparent);
@@ -209,7 +190,6 @@ watch(pendingDraft, (draft) => {
   opacity: 0.6;
 }
 
-/* Body */
 .chat-body {
   flex: 1;
   min-height: 0;
@@ -218,12 +198,10 @@ watch(pendingDraft, (draft) => {
   background: color-mix(in srgb, var(--dt-bg-base) 30%, transparent);
 }
 
-/* Footer */
 .chat-footer {
   flex-shrink: 0;
 }
 
-/* Error */
 .chat-error {
   padding: 0.35rem 1.2rem;
   font-size: 0.76rem;

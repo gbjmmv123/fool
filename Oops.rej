@@ -1,0 +1,9 @@
+@@ -23,6 +23,8 @@
+ const isCompleted = computed(() => state.value.hasCompletedExam && !!state.value.latestExamResultId)
+ const HERO_RETURN_DELAY_MS = 420
+ let heroReplayTimer: ReturnType<typeof setTimeout> | null = null
++const DESKTOP_BP = 1024
++const isDesktop = ref(false)
+ 
+ function clearHeroReplayTimer() {
+   if (!heroReplayTimer) return

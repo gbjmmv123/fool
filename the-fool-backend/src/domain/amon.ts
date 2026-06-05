@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm'
+import { eq, desc } from 'drizzle-orm'
 import { db } from '~/db/client'
 import { users } from '~/db/schema'
 import { nowMs } from '~/utils/time'
@@ -24,6 +24,7 @@ export function loadAmonMembers(): { members: AmonMember[] } {
     })
     .from(users)
     .where(eq(users.joinedAmon, true))
+    .orderBy(desc(users.createdAt))
     .all()
 
   const members: AmonMember[] = rows.map((r) => ({

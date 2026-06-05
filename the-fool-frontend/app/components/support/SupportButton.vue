@@ -27,7 +27,7 @@ const badgeText = computed(() => {
       type="button"
       class="support-button"
       :class="{ 'is-static': reducedMotion }"
-      aria-label="阿罗德斯客服"
+      aria-label="小镜子客服"
       @click="togglePanel"
     >
       <span class="support-button__mirror" aria-hidden="true">

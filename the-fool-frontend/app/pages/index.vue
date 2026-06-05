@@ -3,6 +3,7 @@ import { DEPARTMENT_DATA } from '~/data/departments'
 import type { DepartmentId } from '~/types/department'
 import { updateUserProfile } from '~/services/user'
 import { PAGE_META, HOME, COMMON } from '~/data/copy'
+import { fetchExamResult } from '~/services/exam'
 
 definePageMeta({
   title: PAGE_META.home,
@@ -11,7 +12,7 @@ definePageMeta({
 
 const { state, loading, error, initialized, refresh, patchState } = useBootstrap()
 const { view } = useHomeView()
-const { openNameInputDialog } = useDialog()
+const { openNameInputDialog, openShareCardDialog } = useDialog()
 const { userId } = useUserIdentity()
 const reducedMotion = useReducedMotion()
 const welcomeShown = useState<Set<string>>('church-welcome-shown', () => new Set())
@@ -22,6 +23,9 @@ const heroReplayKey = ref(0)
 const heroTitleChars = HOME.churchName.split('')
 const isCompleted = computed(() => state.value.hasCompletedExam && !!state.value.latestExamResultId)
 const HERO_RETURN_DELAY_MS = 420
+const DESKTOP_BP = 1024
+const isDesktop = ref(false)
+
 let heroReplayTimer: ReturnType<typeof setTimeout> | null = null
 
 function clearHeroReplayTimer() {
@@ -52,6 +56,12 @@ function startHeroReveal(force = false, delay = 0) {
 }
 
 onMounted(() => {
+  if (import.meta.client) {
+    const mq = window.matchMedia(`(min-width: ${DESKTOP_BP}px)`)
+    isDesktop.value = mq.matches
+    mq.addEventListener('change', (e) => { isDesktop.value = e.matches })
+  }
+
   if (!loading.value && !error.value) {
     startHeroReveal(true)
   }
@@ -112,6 +122,22 @@ function goToPrimaryAction() {
   navigateTo('/exam')
 }
 
+const sharing = ref(false)
+async function handleShare() {
+  const id = state.value.latestExamResultId
+  if (!id || sharing.value) return
+  const uid = userId.value
+  if (!uid) return
+  sharing.value = true
+  try {
+    const result = await fetchExamResult(uid, id)
+    await openShareCardDialog(result)
+  } catch {
+  } finally {
+    sharing.value = false
+  }
+}
+
 function selectIndex(i: number) {
   currentIndex.value = i
 }
@@ -155,6 +181,12 @@ function onCardTouchEnd(e: TouchEvent) {
   else prev()
 }
 
+
+function clearAllStorage() {
+  localStorage.clear()
+  sessionStorage.clear()
+  window.location.reload()
+}
 watch(cardsStageRef, (el, _old, onCleanup) => {
   if (!el) return
   el.addEventListener('touchstart', onCardTouchStart, { passive: true })
@@ -172,6 +204,18 @@ const cardsVisible = ref(false)
 const cardsKey = ref(0)
 let switching = false
 
+// On desktop, always show hero animations and both sections
+watch(isDesktop, (val) => {
+  if (val) {
+    currentSection.value = -1
+    heroActive.value = true
+    heroReady.value = true
+  } else {
+    currentSection.value = 0
+  }
+})
+
+
 watch(
   () => loading.value,
   (isLoading) => {
@@ -184,6 +228,8 @@ watch(
 )
 
 function goToSection(index: number) {
+  if (isDesktop.value) return
+
   if (switching) return
   const target = Math.max(0, Math.min(index, 1))
   if (target === currentSection.value) return
@@ -221,6 +267,8 @@ const onTouchEnd = (e: TouchEvent) => {
 
 watch(snapRef, (el, _old, onCleanup) => {
   if (!el) return
+  if (isDesktop.value) return
+
   el.addEventListener('wheel', onWheel, { passive: false })
   el.addEventListener('touchstart', onTouchStart, { passive: true })
   el.addEventListener('touchend', onTouchEnd, { passive: true })
@@ -232,6 +280,8 @@ watch(snapRef, (el, _old, onCleanup) => {
 })
 
 watch(currentSection, (section) => {
+  if (isDesktop.value) return
+
   if (section === 0) {
     startHeroReveal(true, HERO_RETURN_DELAY_MS)
     return
@@ -247,6 +297,17 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <!-- Share button: top-right, only when exam completed -->
+  <button
+    v-if="isCompleted"
+    class="share-fab"
+    :disabled="sharing"
+    aria-label="分享结果"
+    @click="handleShare"
+  >
+    <span class="share-icon" />
+    
+  </button>
   <MainContent :title="HOME.churchLinkText">
     <div v-if="error" class="bootstrap-error">
       <p>{{ error }}</p>
@@ -257,10 +318,9 @@ onUnmounted(() => {
     </div>
     <template v-else>
       <div ref="snapRef" class="home-snap">
-        <div class="home-sections" :style="{ transform: `translateY(${-currentSection * 100}%)` }">
-
+        <div class="home-sections">
         <!-- ── Section 1: Hero ── -->
-        <section class="home-section home-section--hero">
+        <section class="home-section home-section--hero" :class="{ 'is-desktop': isDesktop }">
           <div class="hero-center" :class="{ 'is-fading': currentSection !== 0 || !heroActive }">
             <div class="hero-glow" aria-hidden="true" />
             <div :key="heroReplayKey" class="hero-content" :class="{ 'is-ready': heroReady }">
@@ -291,6 +351,7 @@ onUnmounted(() => {
 
           <!-- Scroll indicator -->
           <div
+            v-if="!isDesktop"
             class="scroll-indicator"
             :class="{
               'is-visible': heroReady && heroActive && currentSection === 0,
@@ -310,11 +371,11 @@ onUnmounted(() => {
         <!-- ── Section 2: Cards showcase ── -->
         <section
           class="home-section home-section--cards"
-          :class="{ 'is-visible': cardsVisible }"
+          :class="{ 'is-visible': isDesktop || cardsVisible }"
         >
           <div class="cards-bg-logo" aria-hidden="true" />
           <div class="cards-inner" :key="cardsKey">
-            <!-- Back-to-top indicator — in normal flow at the top of section 2 -->
+            <template v-if="!isDesktop">
             <div class="cards-back-top" aria-hidden="true" @click="goToSection(0)">
               <div class="cards-back-top__arrow">
                 <svg width="18" height="28" viewBox="0 0 18 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -323,6 +384,8 @@ onUnmounted(() => {
               </div>
               <span class="cards-back-top__label">{{ COMMON.backToHome }}</span>
             </div>
+            </template>
+
 
             <!-- Card with overlaid nav buttons -->
             <div ref="cardsStageRef" class="cards-stage">
@@ -382,6 +445,28 @@ onUnmounted(() => {
 
 <style scoped>
 /* ── Test button ── */
+
+.debug-clear-btn {
+  position: fixed;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 6px 16px;
+  font-size: 13px;
+  border: 1px solid rgba(255, 100, 100, 0.4);
+  border-radius: 6px;
+  background: rgba(30, 10, 10, 0.85);
+  color: rgba(255, 150, 150, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.debug-clear-btn:hover {
+  background: rgba(50, 10, 10, 0.92);
+  border-color: rgba(255, 100, 100, 0.65);
+}
 
 /* ── Bootstrap states ── */
 .bootstrap-error,
@@ -528,6 +613,8 @@ onUnmounted(() => {
 }
 
 .hero-church-name {
+  --hero-title-dark: color-mix(in srgb, var(--dt-text-title) 72%, black 28%);
+  --hero-title-light: color-mix(in srgb, var(--dt-text-title) 78%, white 22%);
   position: relative;
   display: flex;
   align-items: center;
@@ -537,7 +624,11 @@ onUnmounted(() => {
   padding: 0 0.12em;
   font-size: clamp(3.65rem, 14.8vw, 6.2rem);
   font-weight: normal;
-  color: var(--dt-text-title);
+  color: var(--hero-title-light);
+  background: linear-gradient(135deg, var(--hero-title-light) 0%, var(--hero-title-dark) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   letter-spacing: 0.08em;
   line-height: 1.05;
   opacity: 0;
@@ -574,6 +665,7 @@ onUnmounted(() => {
 
 .hero-church-name__char {
   display: inline-block;
+  color: inherit;
   opacity: 1;
   transform: none;
   filter: none;
@@ -962,4 +1054,123 @@ onUnmounted(() => {
   .cards-tab,
   .cards-stage { opacity: 1; transform: none; transition: none; }
 }
+
+/* ════════════════════════════════════════
+   DESKTOP — natural flowing layout
+   ════════════════════════════════════════ */
+@media (min-width: 1024px) {
+  .home-snap {
+    position: relative;
+    overflow: visible;
+  }
+
+  .home-sections {
+    transform: none !important;
+    transition: none;
+  }
+
+  .home-section {
+    height: auto;
+    min-height: auto;
+  }
+
+  .home-section--hero.is-desktop {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .home-section--cards {
+    overflow-y: visible;
+    min-height: auto;
+  }
+
+  .hero-center {
+    transform: none;
+    min-height: auto;
+    padding: calc(72px + 2rem) 2rem 4rem;
+  }
+
+  .hero-center.is-fading {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+
+  .cards-inner {
+    max-width: 720px;
+    padding: 2rem 2rem 4rem;
+  }
+
+  .hero-glow {
+    width: min(60vw, 800px);
+    height: min(60vw, 800px);
+  }
+
+  .hero-brand-logo {
+    width: clamp(150px, 12vw, 180px);
+    height: clamp(150px, 12vw, 180px);
+  }
+
+  .hero-church-name {
+    font-size: clamp(3rem, 6vw, 5rem);
+  }
+}
+
+
+/* ── Share FAB ── */
+.share-fab {
+  position: fixed;
+  top: calc(60px + 1rem);
+  right: 0.9rem;
+  z-index: 50;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  color: var(--dt-text-title);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0.72;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.share-fab:hover {
+  opacity: 1;
+}
+
+.share-fab:active {
+  transform: scale(0.9);
+}
+
+.share-fab:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.share-fab:focus-visible {
+  outline: 2px solid var(--dt-border-active);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.share-icon {
+  display: inline-block;
+  width: 3em;
+  height: 3em;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='m21 12l-7-7v4C7 10 4 15 3 20c2.5-3.5 6-5.1 11-5.1V19z'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+
 </style>

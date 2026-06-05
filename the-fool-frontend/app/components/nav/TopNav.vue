@@ -29,7 +29,7 @@ const items = computed<NavItem[]>(() => {
   const base: NavItem[] = [
     { label: '主页', to: '/' },
     { label: '了解愚者教会', to: '/about' },
-    { label: '阿罗德斯客服', to: '/support', badge: supportBadge },
+    { label: '小镜子客服', to: '/support', badge: supportBadge },
     { label: '全部部门', to: '/departments' },
     examItem.value,
     { label: '我的工牌', to: '/badge' },
@@ -39,7 +39,7 @@ const items = computed<NavItem[]>(() => {
   }
   base.push({ label: '关于本站', to: '/site' })
   if (!bootstrapState.value.hasCompletedExam) {
-    return base.slice(0, 3)
+    return base.slice(0, 2)
   }
   return base
 })

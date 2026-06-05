@@ -51,6 +51,8 @@ function handleReset() {
   emit('reset')
 }
 
+useMobileKeyboard()
+
 const showColorPicker = ref(false)
 
 function applyColor(color: string, setter: (v: string) => void) {
@@ -314,7 +316,7 @@ function applyColor(color: string, setter: (v: string) => void) {
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.04);
   color: var(--dt-text-body);
-  font-size: 0.9rem;
+  font-size: 16px;
   outline: none;
   transition: border-color 0.2s ease;
 }

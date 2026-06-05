@@ -32,7 +32,7 @@ async function toggle(id: string) {
 
 function sortedMembers(dept: DepartmentDetail) {
   return [...dept.members].sort(
-    (a, b) => new Date(a.joinedAt).getTime() - new Date(b.joinedAt).getTime(),
+    (a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime(),
   )
 }
 
